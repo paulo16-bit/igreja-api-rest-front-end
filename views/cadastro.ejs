@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastrar Movimentação</title>
+    <link rel="stylesheet" href="/style/style.css">
+</head>
+<body>
+    <div class="container-form">
+        <h1>Cadastrar <%= tipo %></h1>
+        
+        <form action="/novo/<%= tipo %>" method="POST" class="form-cadastro">
+            <label for="descricao">Descrição:</label>
+            <input type="text" id="descricao" name="descricao" required><br>
+        
+            <label for="valor">Valor:</label>
+            <input type="number" id="valor" name="valor" step="0.01" required><br>
+        
+            <label for="data">Data:</label>
+            <input type="date" id="data" name="data" required><br>
+        
+            <div id="usuario-container" style="display: <%= (tipo === 'dizimo') ? 'block' : 'none' %>;">
+                <label for="usuarioId">Usuário:</label><br>
+                <select id="usuarioId" name="usuarioId" class="select-cadastro">
+                    <option value="">Selecione o dizimista</option>
+                    <% usuarios.forEach(usuario => { %>
+                        <option value="<%= usuario.id_usuarios %>"><%= usuario.id_usuarios %> - <%= usuario.nome %></option>
+                    <% }) %>
+                </select><br>
+            </div>
+            <div class="btn-cadastro">
+                <button type="submit">Salvar</button>
+            </div>
+            
+        </form>
+    </div>
+</body>
+</html>

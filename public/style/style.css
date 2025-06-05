@@ -1,0 +1,207 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #ffffff;
+    margin: 0;
+    padding: 0;
+}
+.logo{
+    text-align: center;
+    padding: 15px;
+    font-size: 1.5em;
+}
+.logo img{
+    width: 30%;
+    height: 30%;
+}
+h1{
+    text-align: center;
+    font-size: 2em;
+}
+h2{
+    text-align: center;
+}
+.form, .form-cadastro {
+    display: flex;
+    margin: auto;
+    background-color: #fff;
+    padding: 25px;
+    flex-direction: column;
+    font-weight: bold;
+    font-size: 1.2em;
+}
+.form input{
+    width: 90%;
+    padding: 15px;
+    margin-bottom: 10px;
+    background-color: #1b98e081;
+    border-radius: 50px;
+}
+.form button{
+    background-color: #062f63;
+    color: #ffffff;
+    font-weight: bold;
+    font-size: large;
+    margin: auto;
+    width: 40%;
+    padding: 15px;
+    border-radius: 50px;
+}
+/* index */
+
+.header{
+    display: flex;
+    justify-content: space-between;
+    padding: 15px;
+    padding-bottom: 5px;
+}
+.header img{
+    width: 40px;
+    height: 40px;
+}
+.header a{
+    margin: 0;
+    padding: 0;
+}
+.container{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    justify-items: center;
+    row-gap: 20px;
+    padding: 10px;
+}
+
+.dizimo, .oferta, .despesa, .saldo{
+    width: 82%;
+    height: 110px;
+    border-radius: 15px;
+    padding: 10px;
+    font-size: 1.4em;
+}
+span{
+    color: white;
+    font-weight: bold;
+}
+.botoes{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 15px 10px;
+}
+.botoes a{
+    width: 80%;
+    margin: 20px;
+}
+.botoes a button{
+    width: 100%;
+    padding: 20px;
+    border-radius: 50px;
+    background-color: #a6a6a6;
+    border: 0px;
+    font-size: large;
+    font-weight: bold;
+}
+.mensagem-erro {
+    color: red;
+    margin-bottom: 10px;
+}
+.btn-adicionar {
+    margin: 10px;
+    background-color: #28a745;
+    padding: 10px 25px;
+    color: #fff;
+    border-radius: 50px;
+    border: 0;
+}
+.container-movimentacoes{
+    margin: 10px;
+    height: 500px;
+}
+table {
+    width: 100%;
+    height: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    margin: auto;
+}
+
+table th, table td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid black;
+}
+.borda {
+    border-right: 1px solid black;
+}
+.dizimos-botoes{
+    display: flex;
+    justify-content: space-around;
+}
+.dizimos-botoes button{
+    margin: 10px;
+    padding: 10px 50px;
+    color: #fff;
+    border-radius: 50px;
+    border: 0;
+}
+.input{
+    margin: 0;
+    padding: 0;
+}
+.table {
+    border: 1px solid rgb(0, 0, 0);
+    border-radius: 20px;
+    margin: 0 10px;
+    height: 90%;
+}
+.form-cadastro input{
+    width: 90%;
+    padding: 15px;
+    margin-bottom: 10px;
+    background-color: #fff;
+    border-radius: 50px;
+    border: 2px solid black;
+}
+.select-cadastro{
+    width: 99%;
+    padding: 15px;
+    margin-bottom: 10px;
+    background-color: #fff;
+    border-radius: 50px;
+    border: 2px solid black;
+}
+.form-cadastro div button{
+    background-color: #062f63;
+    justify-content: center;
+    color: #ffffff;
+    font-weight: bold;
+    font-size: large;
+    width: 30%;
+    padding: 15px;
+    border-radius: 50px;
+}
+.btn-cadastro{
+    width: 100%;  
+    display: flex;
+    justify-content: center;
+    margin-top: 5%
+}
+.menu-navegacao{
+    margin: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.menu-navegacao span{
+    font-size: 1.3em;
+}
+.menu-navegacao button{
+    color: white;
+    font-weight: bold;
+    font-size: 1.3em;
+    background-color: #062f63;
+    width: 35px;
+    height: 35px;
+    border: 0;
+    border-radius: 20px;
+}

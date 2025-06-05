@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/style/style.css">
+    <title>Document</title>
+</head>
+<style>
+    
+</style>
+
+<body>
+    <div class="header">
+        <a href="\"><img src="/img/images-removebg-preview.png" alt="logo Assembleia de Deus El-Shaddai"></a>
+        <img src="/img/perfil.png" alt="Perfil">
+    </div><hr>
+        <% 
+            const meses = [
+                "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", 
+                "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
+            ]; 
+        %>
+
+            <div class="menu-navegacao">
+                <button id="prevMonth"><</button>
+                <span id="currentMonth" style="color: black;"></span>
+                <button id="nextMonth">></button>
+            </div>
+    <!-- <h2>Dízimos - <%= new Date().toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' }) %></h2> -->
+    <div class="container-movimentacoes">
+        <a href="/novo/dizimo"><button class="btn-adicionar">Adicionar</button></a>
+        <div class="table">
+        <table>
+            <thead style=" height: 30px;">
+                <tr>
+                    <th class="borda" style="width: 8%;"></th>
+                    <th class="borda" style="width: 10%;">Dia</th>
+                    <th class="borda" style="width: 50%;">Nome</th>
+                    <th>Valor</th>
+                </tr>
+            </thead>
+            <tbody style=" height: 30px;">
+                <% if (dizimos.length > 0) { %>
+                    <% dizimos.forEach(dizimo => { %>
+                <tr>
+                    <td class="borda" style="padding: 2px;"><input type="radio" name="selecionado" value="<%= dizimo.id_mov %>"></td>
+                    <td class="borda" ><%= new Date(dizimo.data).getDate()+1 %></td>
+                    <td class="borda" ><%= dizimo.descricao %></td>
+                    <td>R$ <%= dizimo.valor.toFixed(2) %></td>
+                </tr>
+                <% }); %>
+                <% } else { %>
+                    <tr>
+                        <td colspan="4" style="text-align: center;">Nenhum dízimo encontrado.</td>
+                    </tr>
+                <% } %>
+            </tbody>
+            <tbody >
+                <tr>
+                    <td style="border: 0;"></td>
+                    <td style="border: 0;"></td>
+                    <td style="border: 0;"></td>
+                    <td style="border: 0;"></td>
+                </tr>
+            </tbody>
+        </table><br>
+        </div>
+        <div class="dizimos-botoes">
+            <button style="background-color: #062f63;" onclick="editar()">Editar</button>
+            <button style="background-color: #ff3131;" onclick="excluir()">Excluir</button>
+        </div>
+        
+    </div>
+</body>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const meses = [
+            "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
+            "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
+        ];
+
+        
+        const urlParams = new URLSearchParams(window.location.search);
+        let mes = parseInt(urlParams.get('mes')) || new Date().getMonth() + 1;
+        let ano = parseInt(urlParams.get('ano')) || new Date().getFullYear();
+
+        // Atualizar a exibição do mês e ano
+        document.getElementById("currentMonth").innerText = `${meses[mes - 1]} ${ano}`;
+
+        document.getElementById("prevMonth").addEventListener("click", function () {
+            mes--;
+            if (mes < 1) {
+                mes = 12;
+                ano--;
+            }
+            window.location.href = `/dizimos?mes=${mes.toString().padStart(2, '0')}&ano=${ano}`;
+        });
+
+        document.getElementById("nextMonth").addEventListener("click", function () {
+            mes++;
+            if (mes > 12) {
+                mes = 1;
+                ano++;
+            }
+            window.location.href = `/dizimos?mes=${mes.toString().padStart(2, '0')}&ano=${ano}`;
+        });
+    });
+
+    // O restante do seu código (getSelecionado, editar, excluir) permanece o mesmo
+    function getSelecionado() {
+        let selecionado = document.querySelector('input[name="selecionado"]:checked');
+        return selecionado ? selecionado.value : null;
+    }
+
+    function editar() {
+        let id = getSelecionado();
+        if (id) {
+            window.location.href = `/editar/${id}`;
+        } else {
+            alert("Por favor, selecione um registro para editar.");
+        }
+    }
+
+    function excluir() {
+        let id = getSelecionado();
+        if (id) {
+            if (confirm("Tem certeza que deseja excluir este registro?")) {
+                fetch(`/excluir/${id}`, { method: 'DELETE' })
+                    .then(response => {
+                        location.reload();
+                    });
+            }
+        } else {
+            alert("Por favor, selecione um registro para excluir.");
+        }
+    }
+</script>
+
+</html>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Movimentação</title>
+    <link rel="stylesheet" href="/style/style.css">
+</head>
+
+<body>
+    <div class="container-form">
+        <h1>Editar Movimentação</h1>
+        <form action="/editar/<%= movimentacao.id_mov %>" method="POST">
+            <label for="descricao">Descrição:</label>
+            <input type="text" id="descricao" name="descricao" value="<%= movimentacao.descricao %>" required>
+
+            <label for="valor">Valor:</label>
+            <input type="number" id="valor" name="valor" step="0.01" value="<%= movimentacao.valor %>" required>
+
+            <label for="data">Data:</label>
+            <input type="date" id="data" name="data" value="<%= movimentacao.data %>" required><br>
+
+            <label for="tipo">Tipo:</label>
+            <select id="tipo" name="tipo" required>
+                <option value="dizimo" <%=movimentacao.tipo==='dizimo' ? 'selected' : '' %>>Dízimo</option>
+                <option value="oferta" <%=movimentacao.tipo==='oferta' ? 'selected' : '' %>>Oferta</option>
+                <option value="despeza" <%=movimentacao.tipo==='despeza' ? 'selected' : '' %>>Despesa</option>
+            </select>
+
+            <div id="usuario-container">
+                <label for="usuarioId">Usuário:</label>
+                <select id="usuarioId" name="usuarioId">
+                    <option value="">Selecione o dizimista</option>
+                    <% usuarios.forEach(usuario => { %>
+                        <option value="<%= usuario.id_usuarios %>"><%= usuario.id_usuarios %> - <%= usuario.nome %></option>
+                    <% }) %>
+                </select><br>
+            </div>
+
+            <button type="submit" class="btn">Salvar</button>
+        </form>
+        <a href="/" class="btn">Voltar</a>
+    </div>
+    <script>
+        document.getElementById("tipo").addEventListener("change", function() {
+            var usuarioContainer = document.getElementById("usuario-container");
+            if (this.value === "dizimo") {
+                usuarioContainer.style.display = "block";
+            } else {
+                usuarioContainer.style.display = "none";
+            }
+        });
+    </script>
+</body>
+
+</html>

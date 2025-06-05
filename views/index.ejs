@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movimentações</title>
+    <link rel="stylesheet" href="/style/style.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+    <div class="header">
+        <img src="/img/images-removebg-preview.png" alt="logo Assembleia de Deus El-Shaddai">
+        <button id="perfilBtn">
+            <img src="/img/perfil.png" alt="Perfil">
+        </button>
+    </div>
+    <div id="perfilModal" style="background-color: #f1f3f7; margin-right: 5px; box-shadow: black;"
+    class="hidden absolute right-0 mt-2 w-40 bg-white rounded-xl shadow-lg z-50">
+<div class="py-2 shadow-lg z-50">
+            <a href="/perfil" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Editar Perfil</a>
+            <button onclick="logout()"
+                class="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100">Sair</button>
+        </div>
+    </div>
+    <hr>
+    <div class="menu-navegacao">
+        <button id="prevMonth"><</button>
+        <span id="currentMonth" style="color: black;"></span>
+        <button id="nextMonth">></button>
+    </div>
+    <div class="container">
+        <div class="dizimo" style="background-color: #1b98e0;">Dízimo: <br><br><span>R$ <%= totais.dizimo %></span></div>
+        <div class="oferta" style="background-color: #f1d120;">Oferta: <br><br><span>R$ <%= totais.oferta %></span></div>
+        <div class="despesa" style="background-color: #e35f18;">Despesas: <br><br><span>R$ <%= totais.despesa %></span></div>
+        <div class="saldo" style="background-color: #00bf63;">Saldo Geral: <br><br><span>R$ <%= saldo.total %></span></div>
+    </div>
+    <hr>
+    <div class="botoes">
+        <a href="/dizimos"><button>Dízimo</button></a>
+        <a href="/ofertas"><button>Oferta</button></a>
+        <a href="/despesas"><button>Despesa</button></a>
+    </div>    
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const meses = [
+                "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
+                "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
+            ];
+
+            
+            const urlParams = new URLSearchParams(window.location.search);
+            let mes = parseInt(urlParams.get('mes')) || new Date().getMonth() + 1;
+            let ano = parseInt(urlParams.get('ano')) || new Date().getFullYear();
+
+            // Atualizar a exibição do mês e ano
+            document.getElementById("currentMonth").innerText = `${meses[mes - 1]} ${ano}`;
+
+            document.getElementById("prevMonth").addEventListener("click", function () {
+                mes--;
+                if (mes < 1) {
+                    mes = 12;
+                    ano--;
+                }
+                window.location.href = `\?mes=${mes.toString().padStart(2, '0')}&ano=${ano}`;
+            });
+
+            document.getElementById("nextMonth").addEventListener("click", function () {
+                mes++;
+                if (mes > 12) {
+                    mes = 1;
+                    ano++;
+                }
+                window.location.href = `\?mes=${mes.toString().padStart(2, '0')}&ano=${ano}`;
+            });
+        });
+    </script>
+    <script>
+        const perfilBtn = document.getElementById('perfilBtn');
+        const perfilModal = document.getElementById('perfilModal');
+      
+        // Alternar exibição do modal
+        perfilBtn.addEventListener('click', () => {
+          perfilModal.classList.toggle('hidden');
+        });
+      
+        // Fechar ao clicar fora
+        document.addEventListener('click', function(event) {
+          if (!perfilModal.contains(event.target) && !perfilBtn.contains(event.target)) {
+            perfilModal.classList.add('hidden');
+          }
+        });
+      
+        // Fechar ao pressionar Esc
+        document.addEventListener('keydown', function(event) {
+          if (event.key === 'Escape') {
+            perfilModal.classList.add('hidden');
+          }
+        });
+      
+        // Função de logout (exemplo)
+        function logout() { 
+          window.location.href = "/login";
+        }
+      </script>
+</body>
+</html>

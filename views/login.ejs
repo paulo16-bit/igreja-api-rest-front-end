@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Sistema Financeiro</title>
+    <link rel="stylesheet" href="/style/style.css">
+</head>
+<body>
+    <div class="container-login">
+        <div class="logo">
+            <img src="/img/images-removebg-preview.png" alt="logo Assembleia de Deus El-Shaddai">
+            <p>ASSEMBLEIA DE DEUS<br>EL-SHADDAI</p>
+        </div>
+        <h1>Login</h1>
+        
+        <form action="/login" method="POST" class="form">
+            <label for="usuario">Usuário:</label>
+            <input type="text" id="usuario" name="usuario" required><br>
+
+            <label for="senha">Senha:</label>
+            <input type="password" id="senha" name="senha" required>
+            <% if (error) { %>
+                <p class="mensagem-erro"><%= error %></p>
+            <% } %>
+            <br><br>
+            <button type="submit" class="btn">Entrar</button>
+        </form>
+    </div>
+</body>
+</html>
