@@ -63,7 +63,7 @@ app.get('/logout', (req, res) => {
     res.redirect('/login');
 });
 
-app.get('/admin_home', isAuthenticated, isAdmin, async (req, res) => {
+app.get('/admin_home', async (req, res) => {
     try {
         const now = new Date();
         const mes = req.query.mes || (now.getMonth()+1).toString().padStart(2, '0');
@@ -98,7 +98,7 @@ app.get('/admin_home', isAuthenticated, isAdmin, async (req, res) => {
       }
     });
 
-app.get('/dizimos', isAuthenticated, isAdmin, async (req, res) => {
+app.get('/dizimos', async (req, res) => {
     try {
         const now = new Date();
         const mes = req.query.mes || (now.getMonth()+1).toString().padStart(2, '0');
@@ -115,7 +115,7 @@ app.get('/dizimos', isAuthenticated, isAdmin, async (req, res) => {
     }
 });
 
-app.get('/ofertas', isAuthenticated, isAdmin, async (req, res) => {
+app.get('/ofertas', async (req, res) => {
     try {
         const now = new Date();
         const mes = req.query.mes || (now.getMonth()+1).toString().padStart(2, '0');
@@ -132,7 +132,7 @@ app.get('/ofertas', isAuthenticated, isAdmin, async (req, res) => {
     }
 });
 
-app.get('/despesas', isAuthenticated, isAdmin, async (req, res) => {
+app.get('/despesas', async (req, res) => {
     try {
         const now = new Date();
         const mes = req.query.mes || (now.getMonth()+1).toString().padStart(2, '0');
@@ -149,7 +149,7 @@ app.get('/despesas', isAuthenticated, isAdmin, async (req, res) => {
     }
 });
 
-app.get('/novo/:tipo', isAuthenticated, isAdmin, async (req, res) => {
+app.get('/novo/:tipo', async (req, res) => {
     const tipo = req.params.tipo;
     try {
         const response = await axios.get(`${API_URL}/auth`);
@@ -160,7 +160,7 @@ app.get('/novo/:tipo', isAuthenticated, isAdmin, async (req, res) => {
     }
 });
 
-app.post('/novo/:tipo', isAuthenticated, isAdmin, async (req, res) => { 
+app.post('/novo/:tipo', async (req, res) => { 
     const tipo = req.params.tipo;
     const { descricao, valor, data, usuarioId } = req.body;
 
@@ -191,7 +191,7 @@ app.post('/novo/:tipo', isAuthenticated, isAdmin, async (req, res) => {
     }
 });
 
-app.get('/editar/:id', isAuthenticated, isAdmin, async (req, res) => {
+app.get('/editar/:id', async (req, res) => {
     const id = req.params.id;
     
     try {
@@ -207,7 +207,7 @@ app.get('/editar/:id', isAuthenticated, isAdmin, async (req, res) => {
     }
 });
 
-app.post('/editar/:id', isAuthenticated, isAdmin, async (req, res) => {
+app.post('/editar/:id', async (req, res) => {
     const id = req.params.id;
     const { descricao, valor, tipo, data, usuarioId } = req.body;
 
@@ -232,7 +232,7 @@ app.post('/editar/:id', isAuthenticated, isAdmin, async (req, res) => {
     }
 });
 
-app.delete('/excluir/:id', isAuthenticated, isAdmin, async (req, res) => {
+app.delete('/excluir/:id', async (req, res) => {
     const { id } = req.params;
     try {
         await axios.delete(`${API_URL}/movimentacoes/${id}`);
@@ -244,7 +244,7 @@ app.delete('/excluir/:id', isAuthenticated, isAdmin, async (req, res) => {
 });
 
 // usuario comum
-app.get('/home', isAuthenticated, async (req, res) => {
+app.get('/home', async (req, res) => {
     const usuario = req.session.user;
     const id_usuario = usuario.id_usuarios;
     const nome_usuario = usuario.nome;
