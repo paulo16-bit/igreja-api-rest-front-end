@@ -13,10 +13,10 @@ app.use(session({
     secret: 'segredo',
     resave: false,
     saveUninitialized: true,
-    cookie: { secure: false }
+    cookie: { secure: process.env.NODE_ENV === 'production', httpOnly: true }
 }));
 
-const API_URL = 'http://localhost:8080';
+const API_URL = 'https://iadel-api-rest.onrender.com';
 
 // Verifica se o usuário está autenticado
 const isAuthenticated = (req, res, next) => {
@@ -25,6 +25,13 @@ const isAuthenticated = (req, res, next) => {
     } else {
         res.redirect('/login');
     }
+};
+
+const isAdmin = (req, res, next) => {
+  if (req.session.user && req.session.user.perfil === 'admin') {
+    return next();
+  }
+  return res.status(403).send('Acesso negado');
 };
 
 app.get('/login', (req, res) => {
@@ -38,7 +45,13 @@ app.post('/login', async (req, res) => {
         const user = response.data;
 
         req.session.user = user;
-        res.redirect('/');
+        const perfil = user.perfil;
+        if(perfil == "admin"){
+            res.redirect('/admin_home');
+        } else {
+            res.redirect('/home');
+        }
+        
     } catch (error) {
         console.error(error);
         res.render('login', { error: 'Usuário ou senha inválidos' });
@@ -50,7 +63,7 @@ app.get('/logout', (req, res) => {
     res.redirect('/login');
 });
 
-app.get('/', async (req, res) => {
+app.get('/admin_home', isAuthenticated, isAdmin, async (req, res) => {
     try {
         const now = new Date();
         const mes = req.query.mes || (now.getMonth()+1).toString().padStart(2, '0');
@@ -85,7 +98,7 @@ app.get('/', async (req, res) => {
       }
     });
 
-app.get('/dizimos', async (req, res) => {
+app.get('/dizimos', isAuthenticated, isAdmin, async (req, res) => {
     try {
         const now = new Date();
         const mes = req.query.mes || (now.getMonth()+1).toString().padStart(2, '0');
@@ -102,7 +115,7 @@ app.get('/dizimos', async (req, res) => {
     }
 });
 
-app.get('/ofertas', async (req, res) => {
+app.get('/ofertas', isAuthenticated, isAdmin, async (req, res) => {
     try {
         const now = new Date();
         const mes = req.query.mes || (now.getMonth()+1).toString().padStart(2, '0');
@@ -119,10 +132,11 @@ app.get('/ofertas', async (req, res) => {
     }
 });
 
-app.get('/despesas', async (req, res) => {
+app.get('/despesas', isAuthenticated, isAdmin, async (req, res) => {
     try {
         const now = new Date();
         const mes = req.query.mes || (now.getMonth()+1).toString().padStart(2, '0');
+        const ano = req.query.ano || now.getFullYear().toString();
 
         const response = await axios.get(`${API_URL}/movimentacoes`, {
             params: { tipo: 'despesa', mes, ano }
@@ -135,7 +149,7 @@ app.get('/despesas', async (req, res) => {
     }
 });
 
-app.get('/novo/:tipo', async (req, res) => {
+app.get('/novo/:tipo', isAuthenticated, isAdmin, async (req, res) => {
     const tipo = req.params.tipo;
     try {
         const response = await axios.get(`${API_URL}/auth`);
@@ -146,7 +160,7 @@ app.get('/novo/:tipo', async (req, res) => {
     }
 });
 
-app.post('/novo/:tipo', async (req, res) => { 
+app.post('/novo/:tipo', isAuthenticated, isAdmin, async (req, res) => { 
     const tipo = req.params.tipo;
     const { descricao, valor, data, usuarioId } = req.body;
 
@@ -177,7 +191,7 @@ app.post('/novo/:tipo', async (req, res) => {
     }
 });
 
-app.get('/editar/:id', async (req, res) => {
+app.get('/editar/:id', isAuthenticated, isAdmin, async (req, res) => {
     const id = req.params.id;
     
     try {
@@ -193,7 +207,7 @@ app.get('/editar/:id', async (req, res) => {
     }
 });
 
-app.post('/editar/:id', async (req, res) => {
+app.post('/editar/:id', isAuthenticated, isAdmin, async (req, res) => {
     const id = req.params.id;
     const { descricao, valor, tipo, data, usuarioId } = req.body;
 
@@ -218,7 +232,7 @@ app.post('/editar/:id', async (req, res) => {
     }
 });
 
-app.delete('/excluir/:id', async (req, res) => {
+app.delete('/excluir/:id', isAuthenticated, isAdmin, async (req, res) => {
     const { id } = req.params;
     try {
         await axios.delete(`${API_URL}/movimentacoes/${id}`);
@@ -228,6 +242,25 @@ app.delete('/excluir/:id', async (req, res) => {
         res.status(500).send('Erro ao excluir movimentação');
     }
 });
+
+// usuario comum
+app.get('/home', isAuthenticated, async (req, res) => {
+    const usuario = req.session.user;
+    const id_usuario = usuario.id_usuarios;
+    const nome_usuario = usuario.nome;
+
+    try {
+        const response = await axios.get(`${API_URL}/movimentacoes/dizimoByUsuario`, {
+            params: { id_usuario }
+        });
+
+        res.render('usuarioComum', { dizimos: response.data, nome: nome_usuario });
+    } catch (error) {
+        console.error('Erro ao buscar dízimos do usuário:', error.message);
+        res.status(500).send('Erro ao buscar dízimos do usuário');
+    }
+});
+
 
 app.listen(3000, '0.0.0.0', () => {
     console.log('Servidor rodando na porta 3000');

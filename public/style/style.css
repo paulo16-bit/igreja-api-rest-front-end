@@ -17,7 +17,7 @@ h1{
     text-align: center;
     font-size: 2em;
 }
-h2{
+h2, h3{
     text-align: center;
 }
 .form, .form-cadastro {
@@ -76,7 +76,7 @@ h2{
     height: 110px;
     border-radius: 15px;
     padding: 10px;
-    font-size: 1.4em;
+    font-size: 1em;
 }
 span{
     color: white;

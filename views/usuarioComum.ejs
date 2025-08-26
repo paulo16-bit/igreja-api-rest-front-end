@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pagina Inicial</title>
+    <link rel="stylesheet" href="/style/style.css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body>
+    <div class="header">
+      <a href="\home"
+        ><img
+          src="/img/images-removebg-preview.png"
+          alt="logo Assembleia de Deus El-Shaddai"
+      /></a>
+      <button id="perfilBtn">
+        <img src="/img/perfil.png" alt="Perfil" />
+      </button>
+    </div>
+    <div
+      id="perfilModal"
+      style="background-color: #f1f3f7; margin-right: 5px; box-shadow: black"
+      class="hidden absolute right-0 mt-2 w-40 bg-white rounded-xl shadow-lg z-50"
+    >
+      <div class="py-2 shadow-lg z-50">
+        <a
+          href="#"
+          class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+          >Meu Perfil</a
+        >
+        <button
+          onclick="logout()"
+          class="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
+        >
+          Sair
+        </button>
+      </div>
+    </div>
+    <hr /><br>
+    <h1>Olá <strong><%= nome %></strong>, Seja Bem vindo!</h1>
+    <h3>Aqui estão os seus dízimos.</h3><br>
+    <div class="container-movimentacoes">
+      <div class="table" style="margin: 0; width: 100%;">
+        <table>
+          <thead style="height: 30px">
+            <tr>
+              <th class="borda" style="width: 20%">Dia</th>
+              <th class="borda" style="width: 40%">Mês</th>
+              <th>Valor</th>
+            </tr>
+          </thead>
+          <tbody style="height: 30px">
+            <% if (dizimos.length > 0) { %> <% dizimos.forEach(dizimo => { %>
+            <tr>
+              <td class="borda"><%= new Date(dizimo.data).getDate() + 1 %></td>
+              <% const meses = [ "Janeiro", "Fevereiro", "Março", "Abril",
+              "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro",
+              "Novembro", "Dezembro" ]; %>
+              <td class="borda">
+                <%= meses[new Date(dizimo.data).getMonth()] %>
+              </td>
+              <td>R$ <%= dizimo.valor.toFixed(2) %></td>
+            </tr>
+            <% }); %> <% } else { %>
+            <tr>
+              <td colspan="3" style="text-align: center">
+                Nenhum dízimo encontrado.
+              </td>
+            </tr>
+            <% } %>
+          </tbody>
+          <tbody >
+                <tr>
+                    <td style="border: 0;"></td>
+                    <td style="border: 0;"></td>
+                    <td style="border: 0;"></td>
+                </tr>
+            </tbody>
+        </table>
+      </div>
+    </div>
+
+    <script>
+      const perfilBtn = document.getElementById("perfilBtn");
+      const perfilModal = document.getElementById("perfilModal");
+
+      // Alternar exibição do modal
+      perfilBtn.addEventListener("click", () => {
+        perfilModal.classList.toggle("hidden");
+      });
+
+      // Fechar ao clicar fora
+      document.addEventListener("click", function (event) {
+        if (
+          !perfilModal.contains(event.target) &&
+          !perfilBtn.contains(event.target)
+        ) {
+          perfilModal.classList.add("hidden");
+        }
+      });
+
+      // Fechar ao pressionar Esc
+      document.addEventListener("keydown", function (event) {
+        if (event.key === "Escape") {
+          perfilModal.classList.add("hidden");
+        }
+      });
+
+      // Função de logout (exemplo)
+      function logout() {
+        window.location.href = "/logout";
+      }
+    </script>
+  </body>
+</html>

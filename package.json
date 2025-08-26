@@ -8,12 +8,12 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": "",
   "dependencies": {
-    "axios": "^1.8.4",
+    "axios": "^1.9.0",
     "body-parser": "^1.20.3",
     "ejs": "^3.1.10",
     "express": "^4.21.2",
     "express-session": "^1.18.1"
-  }
+  },
+  "description": ""
 }
