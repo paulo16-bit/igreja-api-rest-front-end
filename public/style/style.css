@@ -205,3 +205,6 @@ table th, table td {
     border: 0;
     border-radius: 20px;
 }
+.hidden {
+  display: none;
+}
